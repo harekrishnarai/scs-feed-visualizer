@@ -1,0 +1,19 @@
+[theme]
+primaryColor = "#667eea"
+backgroundColor = "#f5f7fa"
+secondaryBackgroundColor = "#ececf1"
+textColor = "#262730"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = true
+
+[logger]
+level = "info"
+
+[server]
+port = 8501
+headless = true
+baseURLPath = "scs-feed-visualizer"
+enableXsrfProtection = false

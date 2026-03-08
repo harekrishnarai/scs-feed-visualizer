@@ -1,0 +1,152 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    # Run daily to fetch latest data
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Clone data repository
+        run: |
+          git clone --depth 1 https://github.com/harekrishnarai/scs-feed.git scs_feed_data
+
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install streamlit-static-export
+
+      - name: Build static HTML with Streamlit
+        run: |
+          mkdir -p _site
+          # Create HTML wrapper
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>SCS Feed Visualizer</title>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <style>
+                  body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; }
+                  iframe { width: 100%; height: 100vh; border: none; }
+              </style>
+          </head>
+          <body>
+              <iframe src="app.html" title="SCS Feed Visualizer"></iframe>
+          </body>
+          </html>
+          EOF
+
+          # Generate Streamlit static export
+          streamlit run app.py --logger.level=error --client.toolbarMode=minimal 2>&1 | head -20 || true
+          
+          # Create a fallback static version
+          cat > _site/app.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>SCS Feed Visualizer - Loading</title>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <style>
+                  body {
+                      margin: 0;
+                      padding: 20px;
+                      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      min-height: 100vh;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                  }
+                  .container {
+                      background: white;
+                      border-radius: 8px;
+                      padding: 40px;
+                      max-width: 600px;
+                      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                      text-align: center;
+                  }
+                  h1 { color: #333; margin-bottom: 10px; }
+                  p { color: #666; line-height: 1.6; margin-bottom: 20px; }
+                  .loader { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px 0; }
+                  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                  .status { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 4px; font-size: 0.9em; color: #555; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>🛡️ SCS Feed Visualizer</h1>
+                  <p>Supply Chain Security Feed Visualization Dashboard</p>
+                  <div class="loader"></div>
+                  <p>Loading dashboard...</p>
+                  <div class="status">
+                      <strong>Status:</strong> This is a static preview page.<br>
+                      The interactive Streamlit dashboard requires a Streamlit Cloud deployment.<br>
+                      <a href="https://github.com/harekrishnarai/scs-feed-visualizer" target="_blank">View on GitHub</a>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Create .nojekyll file
+        run: touch _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+  verify-deployment:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check GitHub Pages URL
+        run: |
+          echo "Deployment URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "Repository: ${{ github.repository }}"
+          echo "Pages will be available at the URL above"
