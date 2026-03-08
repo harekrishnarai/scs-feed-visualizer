@@ -26,7 +26,6 @@ interface SummaryData {
 export default function Dashboard() {
   const [data, setData] = useState<SummaryData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [dateRange, setDateRange] = useState({ start: '', end: '' })
 
   useEffect(() => {
     fetch('/data/summary.json')
@@ -65,7 +64,6 @@ export default function Dashboard() {
     )
   }
 
-  const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b']
   const severityColors = {
     critical: '#ef4444',
     high: '#f97316',
