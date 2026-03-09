@@ -131,123 +131,123 @@ const demoDailyData = generateDailyData(new Date(Date.UTC(2025, 5, 1)), 282)
 const demoArticles: Article[] = [
   {
     id: 'intel-001',
-    title: 'Zero-day in Build Orchestrator Used by Fortune 500 Exposes CI Secrets',
+    title: 'CISA Warns of Actively Exploited Ivanti Connect Secure Vulnerabilities',
     source: 'The Hacker News',
     publishedAt: '2026-03-08T22:15:00Z',
     severity: 'critical',
-    url: 'https://intel-wire.example/news/build-orchestrator-zero-day'
+    url: 'https://thehackernews.com/search/label/Vulnerability'
   },
   {
     id: 'intel-002',
-    title: 'CISA Flags Active Exploitation of Package Signing Infrastructure Weakness',
+    title: 'CISA Adds New Ransomware-Linked CVEs to KEV Catalog',
     source: 'CISA Alerts',
     publishedAt: '2026-03-08T18:40:00Z',
     severity: 'critical',
-    url: 'https://intel-wire.example/news/cisa-package-signing-exploitation'
+    url: 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog'
   },
   {
     id: 'intel-003',
-    title: 'Threat Actors Weaponize npm Typosquat Libraries Targeting DevOps Teams',
+    title: 'Google Chrome Emergency Update Patches High-Severity Zero-Day',
     source: 'SecurityWeek',
     publishedAt: '2026-03-08T14:10:00Z',
     severity: 'high',
-    url: 'https://intel-wire.example/news/npm-typosquat-devops-campaign'
+    url: 'https://www.securityweek.com/?s=chrome+zero-day'
   },
   {
     id: 'intel-004',
-    title: 'Ransomware Affiliate Breaches Artifact Registry via Stolen API Token',
+    title: 'BleepingComputer Tracks New Phishing Campaign Targeting Microsoft 365',
     source: 'BleepingComputer',
     publishedAt: '2026-03-08T11:25:00Z',
     severity: 'high',
-    url: 'https://intel-wire.example/news/artifact-registry-api-token-breach'
+    url: 'https://www.bleepingcomputer.com/search/?q=Microsoft+365+phishing'
   },
   {
     id: 'intel-005',
-    title: 'Compromised GitHub Action Injects Backdoor into Release Pipelines',
+    title: 'Dark Reading: Supply Chain Threats Rise Across Open Source Ecosystems',
     source: 'Dark Reading',
     publishedAt: '2026-03-07T20:00:00Z',
     severity: 'critical',
-    url: 'https://intel-wire.example/news/compromised-github-action-backdoor'
+    url: 'https://www.darkreading.com/search?query=supply%20chain'
   },
   {
     id: 'intel-006',
-    title: 'Open-source Dependency Confusion Wave Hits Financial Sector Projects',
+    title: 'Infosecurity Reports Surge in Business Email Compromise Cases',
     source: 'Infosecurity Magazine',
     publishedAt: '2026-03-07T16:35:00Z',
     severity: 'high',
-    url: 'https://intel-wire.example/news/dependency-confusion-financial-sector'
+    url: 'https://www.infosecurity-magazine.com/news/?search=business+email+compromise'
   },
   {
     id: 'intel-007',
-    title: 'APT Group Mimics Vendor Security Updates to Deliver Credential Stealer',
+    title: 'Mandiant Highlights Evolving TTPs in Financially Motivated Intrusions',
     source: 'Threat Intelligence',
     publishedAt: '2026-03-07T09:05:00Z',
     severity: 'high',
-    url: 'https://intel-wire.example/news/apt-fake-vendor-updates'
+    url: 'https://www.mandiant.com/resources'
   },
   {
     id: 'intel-008',
-    title: 'New SBOM Parsing Flaw Allows Malicious Components to Evade Detection',
+    title: 'Schneier on Security Discusses Risks of AI-Assisted Social Engineering',
     source: 'Schneier on Security',
     publishedAt: '2026-03-06T22:50:00Z',
-    severity: 'high',
-    url: 'https://intel-wire.example/news/sbom-parser-evasion-flaw'
+    severity: 'medium',
+    url: 'https://www.schneier.com/tag/social-engineering/'
   },
   {
     id: 'intel-009',
-    title: 'Cloud Build Agent Malware Campaign Linked to Initial Access Brokers',
+    title: 'CybersecurityNews Covers New Linux Malware Targeting Cloud Workloads',
     source: 'Cybersecurity News',
     publishedAt: '2026-03-06T15:15:00Z',
     severity: 'critical',
-    url: 'https://intel-wire.example/news/cloud-build-agent-malware'
+    url: 'https://cybersecuritynews.com/tag/linux-malware/'
   },
   {
     id: 'intel-010',
-    title: 'Nation-state Operators Target Certificate Authorities in Supply Chain Push',
+    title: 'Hacker News Community Debates SSH Hardening After Recent Breaches',
     source: 'The Hacker News',
     publishedAt: '2026-03-06T09:20:00Z',
-    severity: 'high',
-    url: 'https://intel-wire.example/news/ca-targeting-supply-chain'
+    severity: 'medium',
+    url: 'https://news.ycombinator.com/news'
   },
   {
     id: 'intel-011',
-    title: 'Malicious PyPI Package Downloads Stage-2 Loader Through CDN Redirect',
-    source: 'The Hacker News',
+    title: 'Recorded Future Notes Increase in Dark Web Credential Sales',
+    source: 'Threat Intelligence',
     publishedAt: '2026-03-05T19:45:00Z',
     severity: 'medium',
-    url: 'https://intel-wire.example/news/malicious-pypi-cdn-loader'
+    url: 'https://www.recordedfuture.com/blog'
   },
   {
     id: 'intel-012',
-    title: 'Vendor Patch Tuesday Includes Fix for Build System Privilege Escalation',
+    title: 'SecurityWeek Examines Patch Tuesday Updates from Microsoft',
     source: 'SecurityWeek',
     publishedAt: '2026-03-05T12:00:00Z',
     severity: 'medium',
-    url: 'https://intel-wire.example/news/build-system-priv-esc-fix'
+    url: 'https://www.securityweek.com/?s=patch+tuesday'
   },
   {
     id: 'intel-013',
-    title: 'Researchers Expose Data Exfiltration Path in Legacy CI Connector',
-    source: 'Dark Reading',
+    title: 'BleepingComputer Reports New Android Banking Trojan Campaign',
+    source: 'BleepingComputer',
     publishedAt: '2026-03-04T17:30:00Z',
     severity: 'high',
-    url: 'https://intel-wire.example/news/legacy-ci-connector-exfil'
+    url: 'https://www.bleepingcomputer.com/search/?q=android+banking+trojan'
   },
   {
     id: 'intel-014',
-    title: 'OpenSSF Publishes Hardening Guidance for Release Provenance Checks',
+    title: 'Security Ledger Focuses on Software Supply Chain Visibility Gaps',
     source: 'Supply Chain Security',
     publishedAt: '2026-03-04T10:55:00Z',
-    severity: 'low',
-    url: 'https://intel-wire.example/news/ossf-provenance-guidance'
+    severity: 'medium',
+    url: 'https://securityledger.com/?s=supply+chain'
   },
   {
     id: 'intel-015',
-    title: 'Credential Stuffing Activity Detected Against Popular Git Hosting Service',
-    source: 'BleepingComputer',
+    title: 'Infosecurity Magazine Tracks Critical VPN Vulnerability Exploitation',
+    source: 'Infosecurity Magazine',
     publishedAt: '2026-03-03T22:10:00Z',
-    severity: 'medium',
-    url: 'https://intel-wire.example/news/credential-stuffing-git-hosting'
+    severity: 'critical',
+    url: 'https://www.infosecurity-magazine.com/news/?search=vpn+vulnerability'
   }
 ]
 
