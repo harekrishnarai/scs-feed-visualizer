@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
 
     steps:
       - name: Checkout repository
@@ -82,18 +82,16 @@ jobs:
           echo ""
           echo "✅ Build verification complete"
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          force_orphan: false
-          enable_jekyll: false
+          path: './out'
 
-      - name: Get deployment URL
+      - name: Deploy to GitHub Pages
         id: deployment
-        run: |
-          echo "page_url=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
+        uses: actions/deploy-pages@v4
+
+
 
       - name: Create deployment summary
         run: |
