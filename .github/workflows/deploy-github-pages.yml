@@ -33,13 +33,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm ci
 
       - name: Clone SCS feed data
         run: |
+          echo "📥 Cloning SCS feed data..."
           git clone --depth 1 https://github.com/harekrishnarai/scs-feed.git scs_feed_data
           echo "✅ Data repository cloned"
 
@@ -47,7 +55,7 @@ jobs:
         run: |
           echo "📊 Analyzing SCS feed data..."
           node scripts/analyze-scs-feed.js
-          echo "✅ CSV files generated"
+          echo "✅ CSV analysis complete"
 
       - name: Build Next.js application
         run: |
