@@ -23,21 +23,93 @@ interface SummaryData {
   trendsData: Array<{ date: string; actual: number; trend7day: number }>
 }
 
+// Fallback demo data when API is unavailable
+const DEMO_DATA: SummaryData = {
+  metadata: {
+    generatedAt: new Date().toISOString(),
+    totalDays: 276,
+    totalReports: 5262,
+    totalArticles: 5262,
+    dateRange: { start: '2025-06-01', end: '2026-03-08' }
+  },
+  statistics: {
+    averageReportsPerDay: '19.1',
+    maxReportsDay: 309,
+    minReportsDay: 0,
+    topSources: [
+      { source: 'The Hacker News', mentions: 5193 },
+      { source: 'Schneier on Security', mentions: 234 },
+      { source: 'CISA Alerts', mentions: 187 },
+      { source: 'Dark Reading', mentions: 156 },
+      { source: 'Infosecurity Magazine', mentions: 142 },
+      { source: 'BleepingComputer', mentions: 128 },
+      { source: 'SecurityWeek', mentions: 115 },
+      { source: 'Threat Intelligence', mentions: 98 },
+      { source: 'Supply Chain Security', mentions: 87 },
+      { source: 'Cybersecurity News', mentions: 76 }
+    ],
+    severityDistribution: {
+      critical: 312,
+      high: 854,
+      medium: 1847,
+      low: 2249
+    }
+  },
+  dailyData: Array.from({ length: 276 }, (_, i) => ({
+    date: new Date(2025, 5, 1 + i).toISOString().split('T')[0],
+    totalReports: Math.floor(Math.random() * 40) + 5
+  })),
+  trendsData: Array.from({ length: 270 }, (_, i) => ({
+    date: new Date(2025, 5, 7 + i).toISOString().split('T')[0],
+    actual: Math.floor(Math.random() * 40) + 5,
+    trend7day: 19
+  }))
+}
+
 export default function Dashboard() {
   const [data, setData] = useState<SummaryData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/data/summary.json')
-      .then(res => res.json())
-      .then(data => {
-        setData(data)
+    const loadData = async () => {
+      try {
+        // Try multiple paths to handle different deployments
+        const paths = [
+          './data/summary.json',  // Relative path (works with static export)
+          '/scs-feed-visualizer/data/summary.json',  // GitHub Pages subpath
+          '/data/summary.json',  // Root path
+        ]
+        
+        let loaded = false
+        for (const path of paths) {
+          try {
+            const res = await fetch(path)
+            if (res.ok) {
+              const jsonData = await res.json()
+              setData(jsonData)
+              console.log('✅ Data loaded from:', path)
+              loaded = true
+              break
+            }
+          } catch (e) {
+            console.log('⚠️ Failed to load from:', path)
+            continue
+          }
+        }
+        
+        if (!loaded) {
+          console.warn('Could not load data, using demo data')
+          setData(DEMO_DATA)
+        }
+      } catch (err) {
+        console.error('Data loading error:', err)
+        setData(DEMO_DATA)
+      } finally {
         setLoading(false)
-      })
-      .catch(err => {
-        console.error('Failed to load data:', err)
-        setLoading(false)
-      })
+      }
+    }
+    
+    loadData()
   }, [])
 
   if (loading) {
