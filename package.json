@@ -12,7 +12,7 @@
     "analyze": "node scripts/analyze-scs-feed.js"
   },
   "dependencies": {
-    "next": "14.0.4",
+    "next": "16.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.10.3",
